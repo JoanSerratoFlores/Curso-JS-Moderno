@@ -1,5 +1,5 @@
 //Inicializar una variable cn un valor
-var producto = "Monitor de 24 pulgadas";
+var producto = "Monitor de 25 pulgadas";
 console.log(producto);
 
 //Las variables se puede reasignar el valor
