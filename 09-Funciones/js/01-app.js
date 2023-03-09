@@ -1,17 +1,21 @@
-//DECLARACION DE FUNCION (function declaration)
+const numeros = [10, 20, 30];
 
-function sumar(){
-    console.log(2+2);
-}
+// const producto = {
+//     nombre: "Monitor 20 pulgadas",
+//     precio:300,
+//     disponible:true,
+// }
 
-sumar();
-sumar();
-sumar();
+const meses = new Array('Enero', 'Febrero', 'Marzo');
 
-//Expresion de funcion (Function Expression)
+console.log(numeros);
+console.log(meses);
 
-const sumar2 = function(){
-    console.log(3+3);
-}
+//Arreglo que contiene datos de todo tipo
 
-sumar2();
+const deTodo = ["Hola", 10, true, "si", null, {
+        nombre: "Joan",
+        trabajo: "Programador",
+    },
+    [1, 2, 3]
+];
