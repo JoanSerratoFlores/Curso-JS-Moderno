@@ -27,7 +27,7 @@ const datosBusqueda = {
 
 //Eventos
 document.addEventListener('DOMContentLoaded',() => {
-    mostrarAutos(); //Muestra los automoviles al cargar
+    mostrarAutos(autos); //Muestra los automoviles al cargar
 
     //Llena las opciones de años
     llenarSelect();
@@ -47,38 +47,52 @@ year.addEventListener('change',(e) => {
 
 minimo.addEventListener('change',(e) => {
     datosBusqueda.minimo = e.target.value;
+    filtrarAuto();
 });
 
 maximo.addEventListener('change',(e) => {
     datosBusqueda.maximo = e.target.value;
+    filtrarAuto();
 });
 
 puertas.addEventListener('change',(e) => {
-    datosBusqueda.puertas = e.target.value;
+    datosBusqueda.puertas = parseInt(e.target.value);
+    filtrarAuto();
 });
 
 transmision.addEventListener('change',(e) => {
     datosBusqueda.transmision = e.target.value;
+    filtrarAuto();
 });
 
 color.addEventListener('change',(e) => {
     datosBusqueda.color = e.target.value;
+    filtrarAuto();
     console.log(datosBusqueda);
 });
 
 //Funciones
 
-function mostrarAutos() {
+function mostrarAutos(autos) {
+    LimpiarHtml();//Eliminar HTML
     autos.forEach(auto => {
         const {marca,modelo,year,puertas,transmision,precio,color} = auto;
         const autoHTML = document.createElement('p');
 
         autoHTML.textContent = `
-        ${marca} - ${modelo}- ${puertas} Puertas - Transmision ${transmision} - Color ${color}`;
+        ${marca} - ${modelo}- ${puertas} Puertas - Transmision ${transmision} - Color ${color} - Precio ${precio}`;
         //Insertar en el HTML
         resultado.appendChild(autoHTML);
 
     })
+}
+
+//Limpiar HTML
+
+function LimpiarHtml(){
+    while(resultado.firstChild){
+        resultado.removeChild(resultado.firstChild);
+    }
 }
 
 function llenarSelect(){
@@ -93,8 +107,25 @@ function llenarSelect(){
 
 //Filtrar en base a la busqueda
 function filtrarAuto() {
-    const resultado = autos.filter(filtrarMarca).filter(filtrarYear);
-    console.log(resultado);
+    const resultado = autos.filter(filtrarMarca).filter(filtrarYear)
+    .filter(filtrarMinimo).filter(filtrarMaximo).filter(filtrarPuertas)
+    .filter(filtrarTransmision).filter(filtrarColor).filter(filtrarTransmision);
+    
+    if(resultado.length){
+        console.log(resultado);
+        mostrarAutos(resultado);
+    }else{
+        noResultado();
+    }
+
+}
+
+function noResultado(){
+    LimpiarHtml();
+    const noResultado = document.createElement('div');
+    noResultado.classList.add('alerta','error');
+    noResultado.textContent = 'No hay resultados,Intenta con otros términos de búsqueda';
+    resultado.appendChild(noResultado);
 }
 
 function filtrarMarca(auto){
@@ -110,6 +141,46 @@ function filtrarYear(auto){
     const {year} = datosBusqueda;
     if(year){
         return auto.year===year;
+    }
+    return auto;
+}
+
+function filtrarMinimo(auto){
+    const {minimo} = datosBusqueda;
+    if(minimo){
+        return auto.precio >= minimo;
+    }
+    return auto;
+}
+
+function filtrarMaximo(auto){
+    const {maximo} = datosBusqueda;
+    if(maximo){
+        return auto.precio <= maximo;
+    }
+    return auto;
+}
+
+function filtrarPuertas(auto){
+    const {puertas} = datosBusqueda;
+    if(puertas){
+        return auto.puertas===puertas;
+    }
+    return auto;
+}
+
+function filtrarTransmision(auto){
+    const {transmision} = datosBusqueda;
+    if(transmision){
+        return auto.transmision===transmision;
+    }
+    return auto;
+}
+
+function filtrarColor(auto){
+    const {color} = datosBusqueda;
+    if(color){
+        return auto.color===color;
     }
     return auto;
 }
