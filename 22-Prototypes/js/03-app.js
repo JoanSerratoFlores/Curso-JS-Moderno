@@ -17,11 +17,17 @@ Cliente.prototype.tipoCliente = function (){
 }
 
 Cliente.prototype.nombreClienteSaldo = function () {
-    return `Nombre`
+    return `Nombre: ${this.nombre}, Saldo: ${this.saldo}, Tipo Cliente: ${this.tipoCliente()}`;
+}
+
+Cliente.prototype.retiraSaldo = function (retiro) {
+    this.saldo -= retiro;
 }
 
 //Instanciarlo
 const Pedro = new Cliente('Pedro',6000)
 console.log(Pedro.tipoCliente());
-
+console.log(Pedro.nombreClienteSaldo());
+Pedro.retiraSaldo(1000);
+console.log(Pedro.nombreClienteSaldo());
 console.log(Pedro);
