@@ -4,8 +4,8 @@
 
   document.addEventListener("DOMContentLoaded", () => {
     conectarDB();
-    formulario.addEventListener("submit", validarCliente);
   });
+  formulario.addEventListener("submit", validarCliente);
 
   //Conecta la bae de datos de IndexDB
 
@@ -36,6 +36,7 @@
   }
 
   function crearNuevoCliente(cliente) {
+    
     const transaction = DB.transaction(["crm"], "readwrite");
     const objectStore = transaction.objectStore("crm");
 
@@ -50,6 +51,18 @@
       setTimeout(() => {
         window.location.href = "index.html";
       }, 3000);
+    };
+  }
+
+  function conectarDB() {
+    const conectarDB = window.indexedDB.open('crm', 2);
+
+    conectarDB.onerror = function () {
+      console.log('Hubo un error');
+    };
+
+    conectarDB.onsuccess = function () {
+      DB = conectarDB.result;
     };
   }
 })();

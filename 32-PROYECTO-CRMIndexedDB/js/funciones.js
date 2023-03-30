@@ -1,13 +1,14 @@
 function conectarDB() {
   const conectarDB = window.indexedDB.open("crm", 2);
 
+  conectarDB.onsuccess = function () {
+    DB = conectarDB.result;
+  };
+  
   conectarDB.onerror = function () {
     console.log("Hubo un error");
   };
 
-  conectarDB.onsuccess = function () {
-    DB = conectarDB.result;
-  };
 }
 
 function imprimirAlerta(mensaje, tipo) {
