@@ -36,7 +36,11 @@ function guardarCliente() {
   }
 
   //Asignar datos del formulario a cliente
-  cliente = { ...cliente, mesa, hora };
+  cliente = {
+    ...cliente,
+    mesa,
+    hora
+  };
 
   //Ocultar Modal
   const modalFormulario = document.querySelector("#formulario");
@@ -93,7 +97,10 @@ function mostrarPlatillos(platillos) {
     inputCantidad.onchange = function () {
       const cantidad = parseInt(inputCantidad.value);
       console.log(cantidad);
-      agregarPlatillo({ ...platillo, cantidad });
+      agregarPlatillo({
+        ...platillo,
+        cantidad
+      });
     };
 
     const agregar = document.createElement("div");
@@ -111,7 +118,9 @@ function mostrarPlatillos(platillos) {
 
 function agregarPlatillo(producto) {
   //extraer el pedido actual
-  let { pedido } = cliente;
+  let {
+    pedido
+  } = cliente;
 
   //Revisar que la cantidad sea mayor a 0
   if (producto.cantidad > 0) {
@@ -185,9 +194,16 @@ function actualizarResumen() {
   const grupo = document.createElement("ul");
   grupo.classList.add("list-group");
 
-  const { pedido } = cliente;
+  const {
+    pedido
+  } = cliente;
   pedido.forEach((articulo) => {
-    const { nombre, cantidad, precio, id } = articulo;
+    const {
+      nombre,
+      cantidad,
+      precio,
+      id
+    } = articulo;
 
     const lista = document.createElement("li");
     lista.classList.add("list-group-item");
@@ -275,7 +291,9 @@ function calcularSubtotal(precio, cantidad) {
 }
 
 function eliminarProducto(id) {
-  const { pedido } = cliente;
+  const {
+    pedido
+  } = cliente;
   const resultado = pedido.filter((articulo) => articulo.id != id);
   cliente.pedido = [...resultado];
 
@@ -395,23 +413,79 @@ function formularioPropinas() {
 }
 
 function calcularPropina() {
-  const { pedido } = cliente;
+  const {
+    pedido
+  } = cliente;
 
   let subtotal = 0;
 
   //calcular el subtotal a pagar
-  pedido.forEach( articulo => {
-    subtotal += articulo.cantidad*articulo.precio;
+  pedido.forEach(articulo => {
+    subtotal += articulo.cantidad * articulo.precio;
   })
 
   //Seleccionar el radio button con la propina del cliente
-  const propinaSeleccionada=document.querySelector('[name="propina"]:checked').value;
-  
+  const propinaSeleccionada = document.querySelector('[name="propina"]:checked').value;
+
   //Calcular la propina
   const propina = ((subtotal * parseInt(propinaSeleccionada) / 100))
   console.log(propina);
 
   //Calcular el total a pagar
   const total = subtotal + propina;
-  console.log(total);
+  mostrarTotalHTML(subtotal, total, propina);
+}
+
+function mostrarTotalHTML(subtotal, total, propina) {
+
+  const divTotales = document.createElement('div');
+  divTotales.classList.add('total-pagar');
+
+  //Subtotal
+  const subTotalParrafo = document.createElement('p');
+  subTotalParrafo.classList.add('fs-3', 'fw-bold', 'mt-2');
+  subTotalParrafo.textContent = 'Subtotal Consumo: ';
+
+  const subTotalSpan = document.createElement('span');
+  subTotalSpan.classList.add('fw-normal');
+  subTotalSpan.textContent = `$ ${subtotal}`
+
+  subTotalParrafo.appendChild(subTotalSpan);
+
+  //Propina
+  const propinaParrafo = document.createElement('p');
+  propinaParrafo.classList.add('fs-3', 'fw-bold', 'mt-2');
+  propinaParrafo.textContent = 'Propina: ';
+
+  const propinaSpan = document.createElement('span');
+  propinaSpan.classList.add('fw-normal');
+  propinaSpan.textContent = `$ ${propina}`
+
+  propinaParrafo.appendChild(propinaSpan);
+
+  //Total
+  const totalParrafo = document.createElement('p');
+  totalParrafo.classList.add('fs-3', 'fw-bold', 'mt-2');
+  totalParrafo.textContent = 'Propina: ';
+
+  const totalSpan = document.createElement('span');
+  totalSpan.classList.add('fw-normal');
+  totalSpan.textContent = `$ ${total}`
+
+  totalParrafo.appendChild(totalSpan);
+
+  //Eliminar el ultimo resultado
+  const totalPagarDiv = document.querySelector('.total-pagar');
+  if(totalPagarDiv){
+    totalPagarDiv.remove();
+  }
+
+  //Agregar al HTML
+  divTotales.appendChild(subTotalParrafo);
+  divTotales.appendChild(propinaParrafo);
+  divTotales.appendChild(totalParrafo);
+
+  //Agregar al Formulario
+  const formulario = document.querySelector('.formulario > div');
+  formulario.appendChild(divTotales);
 }
