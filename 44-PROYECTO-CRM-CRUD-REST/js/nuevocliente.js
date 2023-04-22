@@ -1,3 +1,6 @@
+import {mosrtarAlerta,validar} from './funciones.js'
+import {nuevoCliente} from './API.js'
+
 (function(){
     const formulario = document.querySelector('#formulario');
     formulario.addEventListener('submit',validarCliente);
@@ -20,14 +23,10 @@
         
         if(validar(cliente)){
             //Mostrar mensaje
-            console.log('Todos los campos son obligatorios');
+            mosrtarAlerta('Todos los campos son obligatorios');
             return;
         }
-        console.log('Si se paso la validacion');
+        nuevoCliente(cliente);
     }
-    
-    function validar(obj){
-        return !Object.values(obj).every(input => input !== '');
 
-    }
 })();
